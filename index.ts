@@ -18,7 +18,7 @@ setInterval(() => {
 			plc_variables = value.PlcVarsArray.arr;
 		}
   });
-}, 100);
+}, 500);
 
 
 const app = express();

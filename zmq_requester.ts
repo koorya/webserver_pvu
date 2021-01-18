@@ -25,15 +25,19 @@ export async function send_request(command: string) {
 	const task:ServiceTask = {command: command};
 	const text = stringify(task);
 
-	await sock.send(text);
+
+	return sock.send(text).catch(()=>{console.log("cant send command")}).then(async ()=>{
+		console.log("command sended");
+		const receive_message = await sock.receive();
+		const str_buff: string = receive_message.toString();
+		
+		
+		const deser_answ = JSON.parse(str_buff);
+		return deser_answ;
+	});
+	
 	// console.log(`[${command}] command sended`);
 
-	const receive_message = await sock.receive();
-	const str_buff: string = receive_message.toString();
-	
-	
-	const deser_answ = JSON.parse(str_buff);
-	return deser_answ;
 }
 
 export async function send_data(data: iPlcVar[]) {
