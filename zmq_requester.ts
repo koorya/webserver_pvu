@@ -25,16 +25,21 @@ export async function send_request(command: string) {
 	const task:ServiceTask = {command: command};
 	const text = stringify(task);
 
-
-	return sock.send(text).catch(()=>{console.log("cant send command")}).then(async ()=>{
-		console.log("command sended");
-		const receive_message = await sock.receive();
-		const str_buff: string = receive_message.toString();
-		
-		
-		const deser_answ = JSON.parse(str_buff);
-		return deser_answ;
-	});
+	let ret = null;
+	try{
+		ret = sock.send(text).catch(()=>{console.log("cant send command")}).then(async ()=>{
+			console.log("command sended");
+			const receive_message = await sock.receive();
+			const str_buff: string = receive_message.toString();
+			
+			
+			const deser_answ = JSON.parse(str_buff);
+			return deser_answ;
+		});
+	}catch(e){
+		console.log(e);
+	}
+	return ret;
 	
 	// console.log(`[${command}] command sended`);
 

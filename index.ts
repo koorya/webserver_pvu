@@ -14,8 +14,9 @@ let plc_variables: iPlcVar[] = [];
 
 setInterval(() => {
 	send_request("get all plc vars").then((value) => {
-		if('PlcVarsArray' in value){
+		if(value !== null && 'PlcVarsArray' in value){
 			plc_variables = value.PlcVarsArray.arr;
+		}else{
 		}
   });
 }, 700);
