@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as cors from 'cors';
 import * as fs from 'fs';
 // import { plc_variables } from "./PlcVariables";
-import { client_run, send_request, getData, send_data} from './zmq_requester';
+import { client_run, send_request, send_data} from './zmq_requester';
 import { iPlcVar } from "./iPlcVar";
 import { CNNAnswer } from './CNNAnswer';
 
@@ -19,7 +19,7 @@ setInterval(() => {
 		}else{
 		}
   });
-}, 700);
+}, 300);
 
 
 const app = express();
@@ -42,7 +42,7 @@ app.get('/plc_vars', (req, res)=>{
 
 app.put('/plc_vars', (req, res)=>{
 	console.log(req.body);
-	send_data(req.body);
+	send_data(req.body).then((value)=>{if(value == null) {console.log("value null"); send_data(req.body);}});
 	res.end();
 });
 
